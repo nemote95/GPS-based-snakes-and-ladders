@@ -1,5 +1,6 @@
 package com.example.negar.snakesladders;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.media.AudioAttributes;
@@ -14,15 +15,27 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+
+import com.example.negar.snakesladders.utility.PreLollipopSoundPool;
+import com.example.negar.snakesladders.utility.ShakeDetector;
+
+
 
 public class DiceRoll extends AppCompatActivity {
     ImageView dice_picture;     //reference to dice picture
     Random rng=new Random();    //generate random numbers
-    SoundPool dice_sound;       //For dice sound playing
-    int sound_id;               //Used to control sound stream return by SoundPool
-    Handler handler;            //Post message to start roll
-    Timer timer=new Timer();    //Used to implement feedback to user
-    boolean rolling=false;      //Is die rolling?
+    private SoundPool dice_sound;       //For dice sound playing
+    private int sound_id;               //Used to control sound stream return by SoundPool
+    private Handler handler;            //Post message to start roll
+    private Timer timer=new Timer();    //Used to implement feedback to user
+    private boolean rolling=false;      //Is die rolling?
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,25 +43,34 @@ public class DiceRoll extends AppCompatActivity {
         InitSound();
         //Get a reference to image widget
         dice_picture = (ImageView) findViewById(R.id.imageView);
-        dice_picture.setOnClickListener(new HandleClick());
-        //link handler to callback
-        handler=new Handler(callback);
-    }
+        //dice_picture.setOnClickListener(new HandleClick());
 
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
 
-    //User pressed dice, lets start
-    private class HandleClick implements View.OnClickListener {
-        public void onClick(View arg0) {
-            if (!rolling) {
-                rolling = true;
-                //Show rolling image
-                dice_picture.setImageResource(R.drawable.dice3droll);
-                //Start rolling sound
-                dice_sound.play(sound_id, 1.0f, 1.0f, 0, 0, 1.0f);
-                //Pause to allow image to update
-                timer.schedule(new Roll(), 400);
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                /*
+                 * The following method, "handleShakeEvent(count):" is a stub //
+                 * method you would use to setup whatever you want done once the
+                 * device has been shook.
+                 */
+                if (!rolling) {
+                    rolling = true;
+                    //Show rolling image
+                    dice_picture.setImageResource(R.drawable.dice3droll);
+                    //Start rolling sound
+                    dice_sound.play(sound_id, 1.0f, 1.0f, 0, 0, 1.0f);
+                    //Pause to allow image to update
+                    timer.schedule(new Roll(), 1000);
+                }
             }
-        }
+        });
+        handler=new Handler(callback);
+
     }
 
     //New code to initialise sound playback
@@ -69,7 +91,7 @@ public class DiceRoll extends AppCompatActivity {
         } else {
             //Running on device earlier than Lollipop
             //Use the older SoundPool constructor
-            dice_sound=PreLollipopSoundPool.NewSoundPool();
+            dice_sound= PreLollipopSoundPool.NewSoundPool();
         }
         //Load the dice sound
         sound_id=dice_sound.load(this,R.raw.shake_dice,1);
@@ -118,10 +140,19 @@ public class DiceRoll extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         dice_sound.pause(sound_id);
+        mSensorManager.unregisterListener(mShakeDetector);
+
     }
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
     }
 }
 

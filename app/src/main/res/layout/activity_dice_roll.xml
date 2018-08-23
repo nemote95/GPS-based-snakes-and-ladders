@@ -4,16 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DiceRoll">
+    tools:context=".DiceRoll"
+    tools:layout_editor_absoluteY="25dp">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="106dp"
-        android:layout_height="113dp"
-        android:layout_marginEnd="97dp"
-        android:layout_marginRight="97dp"
+        android:layout_width="179dp"
+        android:layout_height="169dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.364"
         app:srcCompat="@drawable/dice3droll" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="171dp"
+        android:layout_height="31dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/chewy"
+        android:text="shake  to  roll  the  dice"
+        android:textColor="?android:attr/colorForeground"
+        android:textSize="18sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
