@@ -1,4 +1,4 @@
-package selectGame;
+package com.example.negar.snakesladders.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,4 +16,13 @@ public class selectGame extends AppCompatActivity{
     }
 
 
+    //for a given game type, populate the details text box with that game
+    public void showGameDetails(){
+
+    }
+
+    //hooked to the GO button, sets the currently selected gaem as the game type
+    public void chooseGame(){
+        //Type.updateType
+    }
 }
