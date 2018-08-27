@@ -51,7 +51,6 @@ public class Board extends Activity {
                 ResourcesCompat.getColor(getResources(),
                         R.color.colorPrimaryDark, null)
         );
-        mPaintText.setTextSize(70);
 
         mImageView = (ImageView) findViewById(R.id.myimageview);
 
@@ -71,26 +70,28 @@ public class Board extends Activity {
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
         mCanvas.drawColor(mColorBackground);
-        mOffset += OFFSET;
 
-        if (mOffset < halfWidth && mOffset < halfHeight) {
-            // Change the color by subtracting an integer.
-            int sqWidth = (vWidth - OFFSET) / boardSize - OFFSET;
-            int sqHeight = (vHeight - OFFSET) / boardSize - OFFSET;
 
-            for (int r = 0; r < boardSize; r++) {
-                for (int c = 0; c < boardSize; c++) {
-                    mPaint.setColor(mColorRectangle - MULTIPLIER * mOffset);
-                    mRect.set(OFFSET + (sqWidth + OFFSET) * r, OFFSET + (sqHeight + OFFSET) * c, OFFSET + (sqWidth + OFFSET) * r + sqWidth, OFFSET + (sqHeight + OFFSET) * c + sqHeight);
-                    mCanvas.drawRect(mRect, mPaint);
-                    // Increase the indent.
-                    mOffset += OFFSET;
-                }
+    // Change the color by subtracting an integer.
+        int sqWidth = (vWidth - OFFSET) / boardSize - OFFSET;
+        int sqHeight = (vHeight - OFFSET) / boardSize - OFFSET;
+
+        mPaintText.setTextSize(sqWidth/3);
+
+
+        for (int r = 0; r < boardSize; r++) {
+            for (int c = 0; c < boardSize; c++) {
+                int cell_number= r+1+c *10;
+                mPaint.setColor(mColorRectangle - MULTIPLIER * mOffset);
+                mRect.set(OFFSET + (sqWidth + OFFSET) * r, OFFSET + (sqHeight + OFFSET) * c, OFFSET + (sqWidth + OFFSET) * r + sqWidth, OFFSET + (sqHeight + OFFSET) * c + sqHeight);
+                mCanvas.drawRect(mRect, mPaint);
+
+                mCanvas.drawText(String.valueOf(cell_number), OFFSET + (sqWidth + OFFSET)*r+sqWidth/2, (sqHeight + OFFSET) * c+sqHeight/2, mPaintText);
+
             }
-
-            view.invalidate();
-
         }
+
+        view.invalidate();
     }
 
 
