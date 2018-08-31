@@ -29,6 +29,10 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity
+            android:name=".SetBoardCenter"
+            android:label="@string/title_activity_set_board_center"></activity>
+
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ public class Game {
     ArrayList <Player> players=null;
     Long startTime;
     Type type;
+    ArrayList <Type> allGTypes = null;
 
 
     public Game(String name, Location center, Type type){
@@ -23,6 +24,10 @@ public class Game {
     public ArrayList <Player> leaderboard(){
         //sort required
         return players;
+    }
+
+    public ArrayList<Type> getAllGTypes() {
+        return allGTypes;
     }
 
     //public calculateDestination
