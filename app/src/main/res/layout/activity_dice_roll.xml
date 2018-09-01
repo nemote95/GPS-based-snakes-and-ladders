@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="179dp"
-        android:layout_height="169dp"
+        android:layout_width="246dp"
+        android:layout_height="236dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -19,16 +19,16 @@
         android:layout_marginTop="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.364"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/dice3droll" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="171dp"
-        android:layout_height="31dp"
+        android:id="@+id/information"
+        android:layout_width="223dp"
+        android:layout_height="64dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="72dp"
@@ -37,12 +37,12 @@
         android:layout_marginTop="40dp"
         android:fontFamily="@font/chewy"
         android:text="shake  to  roll  the  dice"
-        android:textColor="?android:attr/colorForeground"
-        android:textSize="18sp"
+        android:textColor="@color/colorBoardText"
+        android:textSize="24sp"
         android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.263"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.0" />

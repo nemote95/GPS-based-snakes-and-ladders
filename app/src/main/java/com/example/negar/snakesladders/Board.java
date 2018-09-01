@@ -1,25 +1,23 @@
 package com.example.negar.snakesladders;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
-import android.nfc.cardemulation.OffHostApduService;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Board extends AppCompatActivity {
     private Canvas mCanvas;
@@ -33,13 +31,17 @@ public class Board extends AppCompatActivity {
     private static final int MULTIPLIER = 20;
     private int mColorBackground;
     private int mColorRectangle;
-    private int mColorAccent;
 
 
     //get the size from indent later
     private int boardSize=5;
-    private Point user_point=new Point(1,2);
-    List<List<Integer>> board_tiles_point = new ArrayList<List<Integer>>();
+    private int userTile=1;
+    List<List<Integer>> boardTilesPoints = new ArrayList<List<Integer>>();
+    
+    
+    //communicating with other activities 
+    static final int ROLL_Dice_REQUEST = 1;  // The request code
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +52,7 @@ public class Board extends AppCompatActivity {
                 R.color.colorBackground, null);
         mColorRectangle = ResourcesCompat.getColor(getResources(),
                 R.color.colorRectangle, null);
-        mColorAccent = ResourcesCompat.getColor(getResources(),
-                R.color.colorAccent, null);
+
 
         mPaint.setColor(mColorBackground);
 
@@ -67,11 +68,10 @@ public class Board extends AppCompatActivity {
 
     }
 
-    public void drawSomething(View view) {
+    public void drawSomething(View view) throws InterruptedException {
 
         int vWidth = view.getWidth();
         int vHeight = view.getHeight();
-        Log.d("view", view.toString());
 
         mBitmap = Bitmap.createBitmap(vWidth, vHeight, Bitmap.Config.ARGB_8888);
         mImageView.setImageBitmap(mBitmap);
@@ -88,26 +88,34 @@ public class Board extends AppCompatActivity {
 
         for (int col = 0; col < boardSize; col++) {
             for (int row = 0; row < boardSize; row++) {
-                int cell_number= col+1+row*boardSize;
+                int cellNumber= col+1+row*boardSize;
                 mPaint.setColor(mColorRectangle - MULTIPLIER * mOffset);
                 mRect.set(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight);
-                board_tiles_point.add(Arrays.asList(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight));
+                boardTilesPoints.add(Arrays.asList(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight));
 
                 int cornersRadius = 25-boardSize;
                 mCanvas.drawRoundRect(mRect, cornersRadius,cornersRadius,mPaint);
-                mCanvas.drawText(String.valueOf(cell_number), OFFSET + (sqWidth + OFFSET)*col+sqWidth/2, (sqHeight + OFFSET) * row+sqHeight/2, mPaintText);
+                mCanvas.drawText(String.valueOf(cellNumber), OFFSET + (sqWidth + OFFSET)*col+sqWidth/2, (sqHeight + OFFSET) * row+sqHeight/2, mPaintText);
 
             }
         }
 
-        moveAvatarToTile(8,sqWidth,sqHeight);
+        //user movement;use while statement later
 
-        view.invalidate();
+        getDiceNumber();
+        if (userTile!=boardSize*boardSize){
+            showAvatarInTile(userTile,sqWidth,sqHeight);
+        }
+        else{
+            userTile=0;// got congratulation page!
+        }
+
+        //view.invalidate();
     }
 
-    int point_to_tile(int x,int y){
+    int pointToTile(int x,int y){
         for(int i=0;i<boardSize*boardSize;i++){
-            if (x>board_tiles_point.get(i).get(0) & x<board_tiles_point.get(i).get(2) & y>board_tiles_point.get(i).get(1) & y<board_tiles_point.get(i).get(3))
+            if (x>boardTilesPoints.get(i).get(0) & x<boardTilesPoints.get(i).get(2) & y>boardTilesPoints.get(i).get(1) & y<boardTilesPoints.get(i).get(3))
             {
                 return i;
 
@@ -116,16 +124,16 @@ public class Board extends AppCompatActivity {
         return -1;
     }
 
-    Point tile_to_poit(int t){
+    Point tileToPoit(int t){
         t=t/boardSize+((t%boardSize-1)*boardSize);
-        int x= board_tiles_point.get(t).get(0);
-        int y=board_tiles_point.get(t).get(1);
+        int x= boardTilesPoints.get(t).get(0);
+        int y=boardTilesPoints.get(t).get(1);
         Point p=new Point(x,y);
         return p;
     }
 
-    void moveAvatarToTile(int tile,int sqWidth,int sqHeight){
-        Point p =tile_to_poit(tile);
+    void showAvatarInTile(int tile,int sqWidth,int sqHeight){
+        Point p =tileToPoit(tile);
 
         Bitmap avatar = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
 
@@ -134,6 +142,18 @@ public class Board extends AppCompatActivity {
         mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
     }
 
+    void getDiceNumber(){
+        Intent rollDice = new Intent(this,DiceRoll.class);
+        startActivityForResult(rollDice, ROLL_Dice_REQUEST);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ROLL_Dice_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                userTile+=data.getIntExtra("diceNumber",1);
+            }
+        }
+    }
 
 }
