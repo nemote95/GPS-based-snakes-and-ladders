@@ -102,7 +102,6 @@ public class Board extends AppCompatActivity {
 
         //user movement;use while statement later
 
-        getDiceNumber();
         if (userTile!=boardSize*boardSize){
             showAvatarInTile(userTile,sqWidth,sqHeight);
         }
@@ -142,7 +141,7 @@ public class Board extends AppCompatActivity {
         mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
     }
 
-    void getDiceNumber(){
+    void getDiceNumber(View view){
         Intent rollDice = new Intent(this,DiceRoll.class);
         startActivityForResult(rollDice, ROLL_Dice_REQUEST);
     }
