@@ -20,6 +20,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Board extends AppCompatActivity {
+    //board canvas settings
     private Canvas mCanvas;
     private Paint mPaint = new Paint();
     private Paint mPaintText = new Paint();
@@ -27,8 +28,6 @@ public class Board extends AppCompatActivity {
     private ImageView mImageView;
     private RectF mRect = new RectF();
     private static final int OFFSET = 10;
-    private int mOffset = OFFSET;
-    private static final int MULTIPLIER = 20;
     private int mColorBackground;
     private int mColorRectangle;
 
@@ -45,6 +44,7 @@ public class Board extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setting colors and
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
 
@@ -89,7 +89,7 @@ public class Board extends AppCompatActivity {
         for (int col = 0; col < boardSize; col++) {
             for (int row = 0; row < boardSize; row++) {
                 int cellNumber= col+1+row*boardSize;
-                mPaint.setColor(mColorRectangle - MULTIPLIER * mOffset);
+                mPaint.setColor(mColorRectangle);
                 mRect.set(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight);
                 boardTilesPoints.add(Arrays.asList(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight));
 
