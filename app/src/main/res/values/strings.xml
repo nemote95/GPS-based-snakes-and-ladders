@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SnakesLadders</string>
+    <string name="title_activity_board">Board</string>
+    <string name="keep_tapping">Keep tapping.</string>
+    <string name="done">Done!</string>
+    <string name="title_activity_finish">Finish</string>
+
 </resources>
