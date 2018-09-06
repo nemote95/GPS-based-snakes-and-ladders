@@ -10,13 +10,13 @@
     <ImageView
         android:id="@+id/myimageview"
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="371dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintVertical_bias="0.109" />
 
     <ImageView
         android:id="@+id/diceButton"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myimageview"
-        app:layout_constraintVertical_bias="0.304"
+        app:layout_constraintVertical_bias="0.573"
         app:srcCompat="@drawable/dice3d" />
 
     <Button
@@ -38,6 +38,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorBoardText"
         android:fontFamily="@font/chewy"
         android:lineSpacingExtra="8sp"
@@ -47,6 +48,8 @@
         android:textColor="@color/colorBackground"
         android:typeface="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myimageview"
+        app:layout_constraintVertical_bias="0.629" />
 
 </android.support.constraint.ConstraintLayout>

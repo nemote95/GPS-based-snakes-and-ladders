@@ -36,6 +36,10 @@
         <activity
             android:name=".Finish"
             android:label="@string/title_activity_finish"></activity>
+        <activity
+            android:name=".SetBoardCenter"
+            android:label="@string/title_activity_set_board_center"></activity>
+
     </application>
 
 </manifest>
