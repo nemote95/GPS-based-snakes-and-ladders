@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,9 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.example.negar.snakesladders.utility.PLocation;
+
 
 
 
@@ -52,6 +56,10 @@ public class Board extends AppCompatActivity {
         //setting colors and
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
+
+        Intent intent=getIntent();
+        String location=intent.getStringExtra("centerLocation");
+        Log.e("location",location);
 
         mColorBackground = ResourcesCompat.getColor(getResources(),
                 R.color.colorBackground, null);

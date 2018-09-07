@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SetBoardCenter">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:gravity="center"
+        tools:layout_editor_absoluteX="69dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.20"
+            android:gravity="center"
+            android:text="@string/set_center_description"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextLocation"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_weight="0.33"
+            android:layout_marginBottom="10dp"
+            android:editable="false"
+            android:textColorLink="@color/colorRectangle">
+
+            <requestFocus></requestFocus>
+        </EditText>
+
+
+        <Button
+            android:id="@+id/btnLocation"
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:fontFamily="@font/chewy"
+            android:gravity="center"
+            android:text="Get Location"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBackground"
+            android:textColorLink="@color/colorBoardText"></Button>
+
+        <LinearLayout
+            android:id="@+id/layloadingH"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_weight="0.20"
+            android:gravity="center">
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ProgressBar>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSet"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:background="#26db53"
+            android:fontFamily="@font/chewy"
+            android:gravity="center"
+            android:onClick="setCenter"
+            android:text="@string/set_board_center"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBackground"></Button>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
