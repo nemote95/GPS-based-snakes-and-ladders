@@ -27,18 +27,26 @@
             android:name=".Board"
             android:label="SnakesLadders"
             android:theme="@style/AppTheme">
+        </activity>
+        <activity
+            android:name=".Finish"></activity>
+        <activity
+            android:name=".SetBoardCenter">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".Finish"
-            android:label="@string/title_activity_finish"></activity>
-        <activity
-            android:name=".SetBoardCenter"
-            android:label="@string/title_activity_set_board_center"></activity>
+            android:name=".SetBoardCenter">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 
