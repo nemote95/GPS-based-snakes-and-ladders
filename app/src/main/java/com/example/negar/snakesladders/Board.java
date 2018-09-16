@@ -37,9 +37,9 @@ public class Board extends AppCompatActivity implements LocationListener {
     private int userPrevTile=1;
     private int userGoal=1;
     List<List<Integer>> boardTilesPoints = new ArrayList<List<Integer>>();
-    
-    
-    //communicating with other activities 
+
+
+    //communicating with other activities
     static final int ROLL_Dice_REQUEST = 1;  // The request code
 
     //gps
@@ -144,10 +144,10 @@ public class Board extends AppCompatActivity implements LocationListener {
         Log.e("center","Latitude:" + boardLat + ", Longitude:" + boardLong);
         PLocation pLocation=new PLocation(boardLat,boardLong,location);
         Point p=pLocation.getRelativePx(1);
-        Log.e("update",p.x +"y"+p.y);
+        Log.e("update",p.x +"y"+p.y+"sqHeight"+drawing.sqHeight);
         //if tile changes
         int gpstile=drawing.pointToTile(p.x+drawing.OFFSET,p.y+drawing.OFFSET);
-        Log.e("tile","user"+userTile);
+        Log.e("gpstile","user"+gpstile);
 
 
         if (userTile!=gpstile){
@@ -155,7 +155,7 @@ public class Board extends AppCompatActivity implements LocationListener {
             userTile=gpstile;
             Log.e("tile","user"+userTile);
             if (userTile!=-1) {
-                manageUserMovement();
+                  manageUserMovement();
             }
         }
 
