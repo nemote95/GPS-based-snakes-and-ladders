@@ -9,16 +9,22 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.example.negar.snakesladders.utility.Drawing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.example.negar.snakesladders.utility.PLocation;
 
@@ -47,6 +53,8 @@ public class Board extends AppCompatActivity implements LocationListener {
     protected LocationManager locationManager;
     protected String latitude,longitude;
 
+    final Handler myHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setting colors and
@@ -54,29 +62,28 @@ public class Board extends AppCompatActivity implements LocationListener {
         setContentView(R.layout.activity_board);
 
         //location settings
-        Intent intent=getIntent();
-        String location=intent.getStringExtra("centerLocation");
-        try{
-            JSONObject locationObj=new JSONObject(location);
-            boardLat=locationObj.getDouble("lat");
-            boardLong=locationObj.getDouble("long");
-            Log.d("json",locationObj.toString());
-        }
-        catch (JSONException e) {
-            Log.e("json",e.toString());
+        Intent intent = getIntent();
+        String location = intent.getStringExtra("centerLocation");
+        try {
+            JSONObject locationObj = new JSONObject(location);
+            boardLat = locationObj.getDouble("lat");
+            boardLong = locationObj.getDouble("long");
+            Log.d("json", locationObj.toString());
+        } catch (JSONException e) {
+            Log.e("json", e.toString());
 
 
         }
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
 
 
         //board display settings
         int bg = ResourcesCompat.getColor(getResources(), R.color.colorBackground, null);
         int rect = ResourcesCompat.getColor(getResources(), R.color.colorRectangle, null);
-        int txt=ResourcesCompat.getColor(getResources(), R.color.colorBoardText, null);
-        drawing=new Drawing(bg,rect,txt,boardSize);
+        int txt = ResourcesCompat.getColor(getResources(), R.color.colorBoardText, null);
+        drawing = new Drawing(bg, rect, txt, boardSize);
 
         mImageView = (ImageView) findViewById(R.id.myimageview);
         avatar = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
@@ -84,24 +91,19 @@ public class Board extends AppCompatActivity implements LocationListener {
         mImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Boolean mMeasured=false;
+                Boolean mMeasured = false;
 
                 if (!mMeasured) {
 
                     // Here your view is already layed out and measured for the first time
                     drawing.drawBoard(mImageView);
-                    drawing.showAvatarInTile(userTile,userGoal,avatar);
+                    drawing.showAvatarInTile(userTile, userGoal, avatar);
                     mMeasured = true; // Some optional flag to mark, that we already got the sizes
 
                 }
             }
         });
-
-
-
-
     }
-
     void manageUserMovement(){
         if (userTile>=boardSize*boardSize & userGoal>=boardSize*boardSize){
             //celebrate
@@ -111,9 +113,8 @@ public class Board extends AppCompatActivity implements LocationListener {
 
         }
         else {
-            drawing.showAvatarInTile(userTile,userPrevTile,avatar);
-            Log.e("manage tile else","tile"+userTile);
-
+            ((TextView) findViewById(R.id.textView1)).setText("");
+            drawing.showAvatarInTile(userTile, userPrevTile, avatar);
         }
     }
 
@@ -129,7 +130,6 @@ public class Board extends AppCompatActivity implements LocationListener {
                 userPrevTile=userTile;
                 userGoal+=data.getIntExtra("diceNumber",1);
 
-
                 //should be later in gps listener
                 userTile+=data.getIntExtra("diceNumber",1);
                 manageUserMovement();
@@ -144,24 +144,14 @@ public class Board extends AppCompatActivity implements LocationListener {
         Log.e("center","Latitude:" + boardLat + ", Longitude:" + boardLong);
         PLocation pLocation=new PLocation(boardLat,boardLong,location);
         Point p=pLocation.getRelativePx(1);
-        Log.e("update",p.x +"y"+p.y+"sqHeight"+drawing.sqHeight);
         //if tile changes
         int gpstile=drawing.pointToTile(p.x+drawing.OFFSET,p.y+drawing.OFFSET);
-        Log.e("gpstile","user"+gpstile);
 
-
-        if (userTile!=gpstile){
+        if (userTile!=gpstile+1 & gpstile!=-1){
             userPrevTile=userTile;
             userTile=gpstile+1;
-            Log.e("tile","user"+userTile);
-            if (userTile!=-1) {
-                  manageUserMovement();
-            }
+            manageUserMovement();
         }
-
-
-
-
     }
 
     @Override

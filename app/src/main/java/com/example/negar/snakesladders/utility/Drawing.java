@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,12 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Drawing {
-    private Canvas mCanvas;
-    private Paint mPaint = new Paint();
-    private Paint mPaintText = new Paint();
+    public Canvas mCanvas;
+    public Paint mPaint = new Paint();
+    public Paint mPaintText = new Paint();
     private Bitmap mBitmap;
     private ImageView mImageView;
-    private RectF mRect = new RectF();
+    public RectF mRect = new RectF();
     public static final int OFFSET = 10;
     private int mColorBackground;
     private int mColorRectangle;
@@ -62,7 +63,6 @@ public class Drawing {
                 mPaint.setColor(mColorRectangle);
                 mRect.set(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight);
                 boardTilesPoints.add(Arrays.asList(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight));
-
                 int cornersRadius = 25-boardSize;
                 mCanvas.drawRoundRect(mRect, cornersRadius,cornersRadius,mPaint);
                 mCanvas.drawText(String.valueOf(cellNumber), OFFSET + (sqWidth + OFFSET)*col+sqWidth/2, (sqHeight + OFFSET) * row+sqHeight/2, mPaintText);
@@ -100,8 +100,6 @@ public class Drawing {
     public void showAvatarInTile(int userTile,int userPrevTile,Bitmap avatar){
         Point p =tileToPoit(userTile);
         Point prev=tileToPoit(userPrevTile);
-        Log.e("manage tile drawing","tile"+userTile);
-
 
         //clear_prev
         mRect.set(prev.x+sqWidth/4, prev.y+sqHeight/2, prev.x+3*sqWidth/4, prev.y + sqHeight);
@@ -109,6 +107,6 @@ public class Drawing {
 
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(avatar, sqWidth/2, sqHeight/2, true);
         mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
+        Log.e("show tile drawing","tile"+userTile);
     }
-
 }
