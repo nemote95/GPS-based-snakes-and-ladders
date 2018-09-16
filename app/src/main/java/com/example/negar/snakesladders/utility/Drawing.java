@@ -24,7 +24,7 @@ public class Drawing {
     public static final int OFFSET = 10;
     private int mColorBackground;
     private int mColorRectangle;
-    private int sqHeight,sqWidth;
+    public int sqHeight,sqWidth;
     private int boardSize;
     public List<List<Integer>> boardTilesPoints = new ArrayList<List<Integer>>();
 

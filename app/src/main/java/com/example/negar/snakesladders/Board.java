@@ -152,7 +152,7 @@ public class Board extends AppCompatActivity implements LocationListener {
 
         if (userTile!=gpstile){
             userPrevTile=userTile;
-            userTile=gpstile;
+            userTile=gpstile+1;
             Log.e("tile","user"+userTile);
             if (userTile!=-1) {
                   manageUserMovement();
