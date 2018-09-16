@@ -2,19 +2,16 @@ package com.example.negar.snakesladders;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -25,8 +22,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.negar.snakesladders.utility.PLocation;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,7 +30,6 @@ public class SetBoardCenter extends Activity implements OnClickListener {
     TextView location;
     Button getLocation;
     Button go;
-    PLocation GPSListener;
 
     private LocationManager locationMangaer=null;
     private LocationListener locationListener=null;
@@ -87,18 +81,13 @@ public class SetBoardCenter extends Activity implements OnClickListener {
         flag = displayGpsStatus();
         if (flag) {
 
-            Log.v(TAG, "onClick");
-
-            editLocation.setText("Please!! move your device to"+
-                    " see the changes in coordinates."+"\nWait..");
-
             pb.setVisibility(View.VISIBLE);
             locationListener = new MyLocationListener();
 
             try {
                 Location location = locationMangaer.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 locationMangaer.requestLocationUpdates(LocationManager
-                        .GPS_PROVIDER, 500, 1,locationListener);
+                        .GPS_PROVIDER, 0, 0,locationListener);
             } catch (SecurityException e) {
                 //dialogGPS(this.getContext()); // lets the user know there is a problem with the gps
             }
@@ -161,13 +150,11 @@ public class SetBoardCenter extends Activity implements OnClickListener {
             center=loc;
             editLocation.setText("");
             pb.setVisibility(View.INVISIBLE);
-            Toast.makeText(getBaseContext(),"Location changed : Lat: " +
-                            loc.getLatitude()+ " Lng: " + loc.getLongitude(),
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getBaseContext(),"Location changed : Lat: " +
+                            //loc.getLatitude()+ " Lng: " + loc.getLongitude(),
+                    //Toast.LENGTH_SHORT).show();
             String longitude = "Longitude: " +loc.getLongitude();
-            Log.v(TAG, longitude);
             String latitude = "Latitude: " +loc.getLatitude();
-            Log.v(TAG, latitude);
             editLocation.setText(latitude+"\n"+longitude);
 
         }
@@ -200,11 +187,13 @@ public class SetBoardCenter extends Activity implements OnClickListener {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        resultIntent.putExtra("centerLocation", centerJSON.toString());}
+            resultIntent.putExtra("centerLocation", centerJSON.toString());}
         else {
             alertbox("Gps Status!!", "Your GPS is: OFF");
         }
-        startActivityForResult(resultIntent, 2);
+        locationMangaer.removeUpdates(locationListener);
+        locationMangaer = null;
+        startActivity(resultIntent);
 
     }
 
