@@ -37,6 +37,8 @@ public class Board extends AppCompatActivity implements LocationListener {
     private ImageView mImageView;
     private Drawing drawing;
     private Bitmap avatar;
+    ImageView diceButton;
+
     //get the size from indent later
     private int boardSize=5;
     private int userTile=1;
@@ -64,11 +66,11 @@ public class Board extends AppCompatActivity implements LocationListener {
         //location settings
         Intent intent = getIntent();
         String location = intent.getStringExtra("centerLocation");
+
         try {
             JSONObject locationObj = new JSONObject(location);
             boardLat = locationObj.getDouble("lat");
             boardLong = locationObj.getDouble("long");
-            Log.d("json", locationObj.toString());
         } catch (JSONException e) {
             Log.e("json", e.toString());
 
@@ -87,6 +89,7 @@ public class Board extends AppCompatActivity implements LocationListener {
 
         mImageView = (ImageView) findViewById(R.id.myimageview);
         avatar = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
+        diceButton=(ImageView) findViewById(R.id.diceButton);
 
         mImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -115,6 +118,10 @@ public class Board extends AppCompatActivity implements LocationListener {
         else {
             ((TextView) findViewById(R.id.textView1)).setText("");
             drawing.showAvatarInTile(userTile, userPrevTile, avatar);
+            if (userTile==userGoal){
+                diceButton.setVisibility(View.VISIBLE);
+
+            }
         }
     }
 
@@ -127,12 +134,11 @@ public class Board extends AppCompatActivity implements LocationListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ROLL_Dice_REQUEST) {
             if (resultCode == RESULT_OK) {
-                userPrevTile=userTile;
+                //prev goal set
                 userGoal+=data.getIntExtra("diceNumber",1);
+                //show star
+                diceButton.setVisibility(View.INVISIBLE);
 
-                //should be later in gps listener
-                userTile+=data.getIntExtra("diceNumber",1);
-                manageUserMovement();
 
             }
         }

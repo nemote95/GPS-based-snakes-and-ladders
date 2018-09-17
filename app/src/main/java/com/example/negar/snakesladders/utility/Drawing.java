@@ -16,12 +16,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Drawing {
-    public Canvas mCanvas;
-    public Paint mPaint = new Paint();
-    public Paint mPaintText = new Paint();
+    private Canvas mCanvas;
+    private Paint mPaint = new Paint();
+    private Paint mPaintText = new Paint();
     private Bitmap mBitmap;
     private ImageView mImageView;
-    public RectF mRect = new RectF();
+    private RectF mRect = new RectF();
     public static final int OFFSET = 10;
     private int mColorBackground;
     private int mColorRectangle;

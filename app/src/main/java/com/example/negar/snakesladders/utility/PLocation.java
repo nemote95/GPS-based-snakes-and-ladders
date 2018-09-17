@@ -27,10 +27,13 @@ public class PLocation {
         return currentLocation;
     }
 
-    public Point getRelativePx2(double MetersPerPixel){
+    public Point getRelativePx(double MetersPerPixel){
         double rto = 1/MetersPerPixel;
-        //double dLAT = ((boardCenterLat - currentLocation.getLatitude())/ 0.00001) * rto;
-        //double dLNG = -1 * ((boardCenterLong - currentLocation.getLongitude()) / 0.00001) * rto;
+        double dLAT = ((boardCenterLat - currentLocation.getLatitude())/ 0.00001) * rto;
+        double dLNG = -1 * ((boardCenterLong - currentLocation.getLongitude()) / 0.00001) * rto;
+        int x = Math.abs((int)Math.round((dLNG)));
+        int y =  Math.abs((int)Math.round((dLAT)));
+        /*
         int R= 6371;
         double x_curr = R * Math.cos(currentLocation.getLatitude()) * Math.cos(currentLocation.getLongitude());
         double y_curr = R * Math.cos(currentLocation.getLatitude()) * Math.sin(currentLocation.getLongitude());
@@ -40,17 +43,9 @@ public class PLocation {
 
         int x = Math.abs((int)Math.round((x_cent-x_curr)*320));
         int y =  Math.abs((int)Math.round((y_cent-y_curr)*320));
-        Log.e("calc","x"+(x_cent-x_curr)*320+"y"+ (y_cent-y_curr)*320);
-        Point crd = new Point(x, y);
-        return crd;
-    }
 
-    public Point getRelativePx(double MetersPerPixel){
-        double rto = 1/MetersPerPixel;
-        double dLAT = ((boardCenterLat - currentLocation.getLatitude())/ 0.00001) * rto;
-        double dLNG = -1 * ((boardCenterLong - currentLocation.getLongitude()) / 0.00001) * rto;
-        int y = Math.abs((int)Math.round(dLAT));
-        int x =  Math.abs((int)Math.round(dLNG));
+        Log.e("calc","x"+(x_cent-x_curr)*320+"y"+ (y_cent-y_curr)*320);
+        */
         Point crd = new Point(x, y);
         return crd;
     }

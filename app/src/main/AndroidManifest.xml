@@ -17,7 +17,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DiceRoll"></activity>
+        <activity
+            android:name=".DiceRoll"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">>
+
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -26,19 +31,12 @@
         <activity
             android:name=".Board"
             android:label="SnakesLadders"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden">
         </activity>
         <activity
             android:name=".Finish"></activity>
-        <activity
-            android:name=".SetBoardCenter">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name=".SetBoardCenter">
             <intent-filter>
