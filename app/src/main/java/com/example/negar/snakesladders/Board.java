@@ -11,12 +11,17 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.example.negar.snakesladders.utility.Drawing;
 
@@ -54,11 +59,21 @@ public class Board extends AppCompatActivity implements LocationListener {
 
     final Handler myHandler = new Handler();
 
+    private DrawerLayout mDrawerLayout;
+    private ImageView forbidden;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //setting colors and
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         //location settings
         Intent intent = getIntent();
@@ -90,6 +105,8 @@ public class Board extends AppCompatActivity implements LocationListener {
         mImageView = (ImageView) findViewById(R.id.myimageview);
         avatar = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
         diceButton=(ImageView) findViewById(R.id.diceButton);
+        forbidden=(ImageView) findViewById(R.id.diceForbidden);
+
 
         mImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -120,7 +137,7 @@ public class Board extends AppCompatActivity implements LocationListener {
             ((TextView) findViewById(R.id.textView1)).setText("");
             drawing.showAvatarInTile(userTile, userPrevTile, avatar);
             if (userTile==userGoal){
-                diceButton.setVisibility(View.VISIBLE);
+                forbidden.setVisibility(View.INVISIBLE);
 
             }
         }
@@ -133,13 +150,23 @@ public class Board extends AppCompatActivity implements LocationListener {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ROLL_Dice_REQUEST) {
             if (resultCode == RESULT_OK) {
                 //prev goal set
                 userGoal+=data.getIntExtra("diceNumber",1);
                 //show star
-                diceButton.setVisibility(View.INVISIBLE);
+                forbidden.setVisibility(View.VISIBLE);
 
 
             }
