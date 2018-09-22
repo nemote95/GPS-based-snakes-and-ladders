@@ -81,7 +81,7 @@ public class ShakeDetector implements SensorEventListener {
                     if (now - lastShake >= SHAKE_SLOP_TIME_MS) {
                         // trigger shake event
                         Log.d("shake force","force"+force);
-                        mListener.onShake(0);
+                        mListener.onShake(10);
                     } else {
                         Log.d("shake","No Motion detected");
 

@@ -11,6 +11,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.example.negar.snakesladders.model.Board;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,15 +29,15 @@ public class Drawing {
     private int mColorBackground;
     private int mColorRectangle;
     public int sqHeight,sqWidth;
-    private int boardSize;
-    public List<List<Integer>> boardTilesPoints = new ArrayList<List<Integer>>();
+    
+    public Board board;
 
     public Drawing(int bgColor, int recColor,int textColor,int boardSize){
         mColorBackground = bgColor;
         mColorRectangle = recColor;
         mPaint.setColor(mColorBackground);
         mPaintText.setColor(textColor);
-        this.boardSize=boardSize;
+        this.board=board=new Board(boardSize);
 
     }
 
@@ -51,19 +54,19 @@ public class Drawing {
 
 
         // Change the color by subtracting an integer.
-        sqWidth = (vWidth - OFFSET) / boardSize - OFFSET;
-        sqHeight = (vHeight - OFFSET) / boardSize - OFFSET;
+        sqWidth = (vWidth - OFFSET) / board.size - OFFSET;
+        sqHeight = (vHeight - OFFSET) / board.size - OFFSET;
 
         mPaintText.setTextSize(sqWidth/3);
 
 
-        for (int col = 0; col < boardSize; col++) {
-            for (int row = 0; row < boardSize; row++) {
-                int cellNumber= col+1+row*boardSize;
+        for (int col = 0; col < board.size; col++) {
+            for (int row = 0; row < board.size; row++) {
+                int cellNumber= col+1+row*board.size;
                 mPaint.setColor(mColorRectangle);
                 mRect.set(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight);
-                boardTilesPoints.add(Arrays.asList(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight));
-                int cornersRadius = 25-boardSize;
+                board.boardTilesPoints.add(Arrays.asList(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight));
+                int cornersRadius = 25-board.size;
                 mCanvas.drawRoundRect(mRect, cornersRadius,cornersRadius,mPaint);
                 mCanvas.drawText(String.valueOf(cellNumber), OFFSET + (sqWidth + OFFSET)*col+sqWidth/2, (sqHeight + OFFSET) * row+sqHeight/2, mPaintText);
 
@@ -72,34 +75,9 @@ public class Drawing {
         //view.invalidate();
     }
 
-
-    public int pointToTile(int x,int y){
-        for(int i=0;i<boardSize*boardSize;i++){
-            if (x>=boardTilesPoints.get(i).get(0) & x<=boardTilesPoints.get(i).get(2) & y>=boardTilesPoints.get(i).get(1) & y<=boardTilesPoints.get(i).get(3))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public Point tileToPoit(int t){
-        if (t%boardSize==0){
-            t=t/boardSize+(boardSize-1)*boardSize-1;
-        }
-        else{
-            t=t/boardSize+((t%boardSize-1)*boardSize);
-        }
-
-        int x= boardTilesPoints.get(t).get(0);
-        int y=boardTilesPoints.get(t).get(1);
-        Point p=new Point(x,y);
-        return p;
-    }
-
     public void showAvatarInTile(int userTile,int userPrevTile,Bitmap avatar){
-        Point p =tileToPoit(userTile);
-        Point prev=tileToPoit(userPrevTile);
+        Point p =board.tileToPoit(userTile);
+        Point prev=board.tileToPoit(userPrevTile);
 
         //clear_prev
         mRect.set(prev.x+sqWidth/4, prev.y+sqHeight/2, prev.x+3*sqWidth/4, prev.y + sqHeight);

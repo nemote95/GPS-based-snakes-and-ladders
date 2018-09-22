@@ -10,7 +10,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,11 +20,6 @@ import android.widget.TextView;
 
 import com.example.negar.snakesladders.utility.Drawing;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.example.negar.snakesladders.utility.PLocation;
 
 import org.json.JSONException;
@@ -34,6 +28,7 @@ import org.json.JSONObject;
 
 
 public class Board extends AppCompatActivity implements LocationListener {
+    Boolean emulating=true;
     private ImageView mImageView;
     private Drawing drawing;
     private Bitmap avatar;
@@ -44,7 +39,6 @@ public class Board extends AppCompatActivity implements LocationListener {
     private int userTile=1;
     private int userPrevTile=1;
     private int userGoal=1;
-    List<List<Integer>> boardTilesPoints = new ArrayList<List<Integer>>();
 
 
     //communicating with other activities
@@ -54,6 +48,9 @@ public class Board extends AppCompatActivity implements LocationListener {
     double boardLong,boardLat;
     protected LocationManager locationManager;
     protected String latitude,longitude;
+
+    private PLocation pLocation;
+    double mpp=0.025;
 
     final Handler myHandler = new Handler();
 
@@ -71,14 +68,17 @@ public class Board extends AppCompatActivity implements LocationListener {
             JSONObject locationObj = new JSONObject(location);
             boardLat = locationObj.getDouble("lat");
             boardLong = locationObj.getDouble("long");
+            if (emulating) {
+                double mpp=0.025;
+            }
+
+            pLocation=new PLocation(boardLat,boardLong,12.742*1000000,mpp);
         } catch (JSONException e) {
             Log.e("json", e.toString());
-
-
         }
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
 
 
         //board display settings
@@ -100,7 +100,8 @@ public class Board extends AppCompatActivity implements LocationListener {
 
                     // Here your view is already layed out and measured for the first time
                     drawing.drawBoard(mImageView);
-                    drawing.showAvatarInTile(userTile, userGoal, avatar);
+                    drawing.showAvatarInTile(userTile, userPrevTile, avatar);
+                    pLocation.writeToFile(drawing.sqWidth,drawing.sqHeight,boardSize,10);
                     mMeasured = true; // Some optional flag to mark, that we already got the sizes
 
                 }
@@ -123,6 +124,7 @@ public class Board extends AppCompatActivity implements LocationListener {
 
             }
         }
+
     }
 
     void getDiceNumber(View view){
@@ -148,10 +150,14 @@ public class Board extends AppCompatActivity implements LocationListener {
     public void onLocationChanged(Location location) {
         Log.e("update","Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
         Log.e("center","Latitude:" + boardLat + ", Longitude:" + boardLong);
-        PLocation pLocation=new PLocation(boardLat,boardLong,location);
-        Point p=pLocation.getRelativePx(1);
+
+        Point p=pLocation.toPoint(location);
+        Log.e("to point now","p="+p);
+
+
         //if tile changes
-        int gpstile=drawing.pointToTile(p.x+drawing.OFFSET,p.y+drawing.OFFSET);
+        int gpstile=drawing.board.pointToTile(p.x+drawing.OFFSET,p.y+drawing.OFFSET);
+        Log.d("gtile","gtile"+gpstile);
 
         if (userTile!=gpstile+1 & gpstile!=-1){
             userPrevTile=userTile;
