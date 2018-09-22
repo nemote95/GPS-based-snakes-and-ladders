@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.negar.snakesladders.R;
 import com.example.negar.snakesladders.model.Board;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class Drawing {
 
     }
 
-    public void drawBoard(View view)  {
+    public void drawBoard(View view,Bitmap ladder,Bitmap snake)  {
 
         int vWidth = view.getWidth();
         int vHeight = view.getHeight();
@@ -72,7 +74,36 @@ public class Drawing {
 
             }
         }
-        //view.invalidate();
+        //randomly display ladder and snakes
+        Point p_5 =board.tileToPoit(5);
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth*3/4, sqHeight*2, true);
+        mCanvas.drawBitmap(resizedBitmap,p_5.x+sqWidth/4,p_5.y+sqHeight/2,mPaint);
+
+        p_5 =board.tileToPoit(6);
+        resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth*3/4, sqHeight*2, true);
+        mCanvas.drawBitmap(resizedBitmap,p_5.x+sqWidth/4,p_5.y+sqHeight/2,mPaint);
+
+        p_5 =board.tileToPoit(13);
+        resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth*3/4, sqHeight*2, true);
+        mCanvas.drawBitmap(resizedBitmap,p_5.x+sqWidth/4,p_5.y+sqHeight/2,mPaint);
+
+        p_5 =board.tileToPoit(14);
+        resizedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight, true);
+        mCanvas.drawBitmap(resizedBitmap,p_5.x,p_5.y+3*sqHeight/5,mPaint);
+
+
+        p_5 =board.tileToPoit(2);
+        resizedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight, true);
+        mCanvas.drawBitmap(resizedBitmap,p_5.x,p_5.y+3*sqHeight/5,mPaint);
+
+        p_5 =board.tileToPoit(16);
+        Matrix matrix = new Matrix();
+        matrix.preScale(-1.0f, 1.0f);
+        resizedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight, true);
+        Bitmap rotated = Bitmap.createBitmap(resizedBitmap, 0, 0, sqWidth*2, sqHeight, matrix, true);
+        mCanvas.drawBitmap(rotated,p_5.x,p_5.y+3*sqHeight/5,mPaint);
+
+
     }
 
     public void showAvatarInTile(int userTile,int userPrevTile,Bitmap avatar){
@@ -85,6 +116,5 @@ public class Drawing {
 
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(avatar, sqWidth/2, sqHeight/2, true);
         mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
-        Log.e("show tile drawing","tile"+userTile);
     }
 }

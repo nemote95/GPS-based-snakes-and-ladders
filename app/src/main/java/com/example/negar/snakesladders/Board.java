@@ -37,6 +37,8 @@ public class Board extends AppCompatActivity implements LocationListener {
     private ImageView mImageView;
     private Drawing drawing;
     private Bitmap avatar;
+    private Bitmap ladder;
+    private Bitmap snake;
     ImageView diceButton;
 
     //get the size from indent later
@@ -104,6 +106,8 @@ public class Board extends AppCompatActivity implements LocationListener {
 
         mImageView = (ImageView) findViewById(R.id.myimageview);
         avatar = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
+        ladder = BitmapFactory.decodeResource(getResources(), R.drawable.ladder);
+        snake = BitmapFactory.decodeResource(getResources(), R.drawable.snake);
         diceButton=(ImageView) findViewById(R.id.diceButton);
         forbidden=(ImageView) findViewById(R.id.diceForbidden);
 
@@ -116,7 +120,7 @@ public class Board extends AppCompatActivity implements LocationListener {
                 if (!mMeasured) {
 
                     // Here your view is already layed out and measured for the first time
-                    drawing.drawBoard(mImageView);
+                    drawing.drawBoard(mImageView,ladder,snake);
                     drawing.showAvatarInTile(userTile, userPrevTile, avatar);
                     pLocation.writeToFile(drawing.sqWidth,drawing.sqHeight,boardSize,10);
                     mMeasured = true; // Some optional flag to mark, that we already got the sizes
