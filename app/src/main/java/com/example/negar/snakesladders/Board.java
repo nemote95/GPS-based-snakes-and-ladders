@@ -180,5 +180,4 @@ public class Board extends AppCompatActivity implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("Latitude","status");
     }
-
 }
