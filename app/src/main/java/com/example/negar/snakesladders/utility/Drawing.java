@@ -64,7 +64,7 @@ public class Drawing {
                 mPaint.setColor(mColorRectangle);
                 mRect.set(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight);
                 board.boardTilesPoints.add(Arrays.asList(OFFSET + (sqWidth + OFFSET) * col, OFFSET + (sqHeight + OFFSET) * row, OFFSET + (sqWidth + OFFSET) * col + sqWidth, OFFSET + (sqHeight + OFFSET) * row + sqHeight));
-                int cornersRadius = 25-board.size;
+                int cornersRadius = 30-board.size+200/sqHeight;
                 mCanvas.drawRoundRect(mRect, cornersRadius,cornersRadius,mPaint);
                 mCanvas.drawText(String.valueOf(cellNumber), OFFSET + (sqWidth + OFFSET)*col+sqWidth/2, (sqHeight + OFFSET) * row+sqHeight/2, mPaintText);
 

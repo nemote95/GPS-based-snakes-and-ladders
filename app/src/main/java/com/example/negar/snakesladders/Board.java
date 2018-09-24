@@ -2,12 +2,14 @@ package com.example.negar.snakesladders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
@@ -16,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -33,7 +36,6 @@ import org.json.JSONObject;
 
 
 public class Board extends AppCompatActivity implements LocationListener {
-    Boolean emulating=true;
     private ImageView mImageView;
     private Drawing drawing;
     private Bitmap avatar;
@@ -44,7 +46,6 @@ public class Board extends AppCompatActivity implements LocationListener {
     //get the size from indent later
     private int boardSize=5;
     private int userTile=1;
-    private int userPrevTile=1;
     private int userGoal=1;
 
 
@@ -55,6 +56,8 @@ public class Board extends AppCompatActivity implements LocationListener {
     double boardLong,boardLat;
     protected LocationManager locationManager;
     protected String latitude,longitude;
+    int minTimeUpdate=5000;
+
 
     private PLocation pLocation;
     double mpp=0.025;
@@ -85,26 +88,35 @@ public class Board extends AppCompatActivity implements LocationListener {
             JSONObject locationObj = new JSONObject(location);
             boardLat = locationObj.getDouble("lat");
             boardLong = locationObj.getDouble("long");
-            if (emulating) {
-                double mpp=0.025;
-            }
-
             pLocation=new PLocation(boardLat,boardLong,12.742*1000000,mpp);
         } catch (JSONException e) {
             Log.e("json", e.toString());
         }
 
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = this.registerReceiver(null, ifilter);
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        float batteryPct = level / (float)scale;
+
+        if (batteryPct<0.3){
+            minTimeUpdate=1000;
+        }
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeUpdate, 0, this);
 
 
         //board display settings
-        int bg = ResourcesCompat.getColor(getResources(), R.color.colorBackground, null);
         int rect = ResourcesCompat.getColor(getResources(), R.color.colorRectangle, null);
         int txt = ResourcesCompat.getColor(getResources(), R.color.colorBoardText, null);
         drawing = new Drawing(rect, txt, boardSize);
 
         mImageView = (ImageView) findViewById(R.id.myimageview);
+        Point size=new Point();
+        int height = getResources().getSystem().getDisplayMetrics().heightPixels;
+        mImageView.getLayoutParams().height = height*3/5;
+        mImageView.requestLayout();
         avatar = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
         ladder = BitmapFactory.decodeResource(getResources(), R.drawable.ladder);
         snake = BitmapFactory.decodeResource(getResources(), R.drawable.snake);
@@ -148,7 +160,7 @@ public class Board extends AppCompatActivity implements LocationListener {
 
     }
 
-    void getDiceNumber(View view){
+    public void getDiceNumber(View view){
         Intent rollDice = new Intent(this,DiceRoll.class);
         startActivityForResult(rollDice, ROLL_Dice_REQUEST);
     }
@@ -194,7 +206,6 @@ public class Board extends AppCompatActivity implements LocationListener {
         Log.d("gtile","gtile"+gpstile);
 
         if (userTile!=gpstile+1 & gpstile!=-1){
-            userPrevTile=userTile;
             userTile=gpstile+1;
             manageUserMovement();
         }
