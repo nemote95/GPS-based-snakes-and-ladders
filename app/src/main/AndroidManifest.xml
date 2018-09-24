@@ -20,7 +20,8 @@
         <activity
             android:name=".DiceRoll"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">>
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/AppTheme">>
 
         </activity>
 

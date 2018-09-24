@@ -28,18 +28,15 @@ public class Drawing {
     private ImageView mImageView;
     private RectF mRect = new RectF();
     public static final int OFFSET = 10;
-    private int mColorBackground;
     private int mColorRectangle;
     public int sqHeight,sqWidth;
     
     public Board board;
 
-    public Drawing(int bgColor, int recColor,int textColor,int boardSize){
-        mColorBackground = bgColor;
+    public Drawing( int recColor,int textColor,int boardSize){
         mColorRectangle = recColor;
-        mPaint.setColor(mColorBackground);
         mPaintText.setColor(textColor);
-        this.board=board=new Board(boardSize);
+        this.board=new Board(boardSize);
 
     }
 
@@ -52,7 +49,6 @@ public class Drawing {
         mImageView= (ImageView) view;
         mImageView.setImageBitmap(mBitmap);
         mCanvas = new Canvas(mBitmap);
-        mCanvas.drawColor(mColorBackground);
 
 
         // Change the color by subtracting an integer.
@@ -74,47 +70,30 @@ public class Drawing {
 
             }
         }
-        //randomly display ladder and snakes
-        Point p_5 =board.tileToPoit(5);
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth*3/4, sqHeight*2, true);
-        mCanvas.drawBitmap(resizedBitmap,p_5.x+sqWidth/4,p_5.y+sqHeight/2,mPaint);
+        //display ladder and snakes
+        for (int t=0; t<board.boardLadders.size();t++){
+            Point p =board.tileToPoit(board.boardLadders.get(t));
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth/2, sqHeight*2, true);
+            mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
+        }
 
-        p_5 =board.tileToPoit(6);
-        resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth*3/4, sqHeight*2, true);
-        mCanvas.drawBitmap(resizedBitmap,p_5.x+sqWidth/4,p_5.y+sqHeight/2,mPaint);
+        for (int t=0; t<board.boardSnakes.size();t++){
+            Point p =board.tileToPoit(board.boardSnakes.get(t));
+            Bitmap modifiedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight/3, true);
 
-        p_5 =board.tileToPoit(13);
-        resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth*3/4, sqHeight*2, true);
-        mCanvas.drawBitmap(resizedBitmap,p_5.x+sqWidth/4,p_5.y+sqHeight/2,mPaint);
-
-        p_5 =board.tileToPoit(14);
-        resizedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight, true);
-        mCanvas.drawBitmap(resizedBitmap,p_5.x,p_5.y+3*sqHeight/5,mPaint);
-
-
-        p_5 =board.tileToPoit(2);
-        resizedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight, true);
-        mCanvas.drawBitmap(resizedBitmap,p_5.x,p_5.y+3*sqHeight/5,mPaint);
-
-        p_5 =board.tileToPoit(16);
-        Matrix matrix = new Matrix();
-        matrix.preScale(-1.0f, 1.0f);
-        resizedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight, true);
-        Bitmap rotated = Bitmap.createBitmap(resizedBitmap, 0, 0, sqWidth*2, sqHeight, matrix, true);
-        mCanvas.drawBitmap(rotated,p_5.x,p_5.y+3*sqHeight/5,mPaint);
-
-
+            if (t%2==0){
+                Matrix matrix = new Matrix();
+                matrix.preScale(-1.0f, 1.0f);
+                modifiedBitmap = Bitmap.createBitmap(modifiedBitmap,0,0, sqWidth*2, sqHeight/3,matrix, true);
+            }
+            mCanvas.drawBitmap(modifiedBitmap,p.x,p.y+sqHeight/2,mPaint);
+        }
     }
 
-    public void showAvatarInTile(int userTile,int userPrevTile,Bitmap avatar){
+    public void showAvatarInTile(int userTile,Bitmap avatar){
         Point p =board.tileToPoit(userTile);
-        Point prev=board.tileToPoit(userPrevTile);
 
-        //clear_prev
-        mRect.set(prev.x+sqWidth/4, prev.y+sqHeight/2, prev.x+3*sqWidth/4, prev.y + sqHeight);
-        mCanvas.drawRect(mRect,mPaint);
-
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(avatar, sqWidth/2, sqHeight/2, true);
-        mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
+        Bitmap resizedAvatar = Bitmap.createScaledBitmap(avatar, sqWidth/2, sqHeight/2, true);
+        mCanvas.drawBitmap(resizedAvatar,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
     }
 }

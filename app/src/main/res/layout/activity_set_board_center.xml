@@ -25,6 +25,8 @@
             android:layout_height="84dp"
             android:layout_weight="0.20"
             android:gravity="center"
+            android:fontFamily="@font/chewy"
+            android:textColor="@color/colorBoardText"
             android:text="@string/set_center_description"
             android:textSize="20sp" />
 

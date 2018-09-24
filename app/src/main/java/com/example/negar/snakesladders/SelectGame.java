@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 
 public class SelectGame extends AppCompatActivity{
-    Board currBoard=new Board(4, "test");
+    Board currBoard=new Board(4);
 
 
     @Override

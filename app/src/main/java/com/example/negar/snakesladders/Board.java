@@ -62,7 +62,7 @@ public class Board extends AppCompatActivity implements LocationListener {
     final Handler myHandler = new Handler();
 
     private DrawerLayout mDrawerLayout;
-    private ImageView forbidden;
+    private TextView information;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,14 +102,14 @@ public class Board extends AppCompatActivity implements LocationListener {
         int bg = ResourcesCompat.getColor(getResources(), R.color.colorBackground, null);
         int rect = ResourcesCompat.getColor(getResources(), R.color.colorRectangle, null);
         int txt = ResourcesCompat.getColor(getResources(), R.color.colorBoardText, null);
-        drawing = new Drawing(bg, rect, txt, boardSize);
+        drawing = new Drawing(rect, txt, boardSize);
 
         mImageView = (ImageView) findViewById(R.id.myimageview);
         avatar = BitmapFactory.decodeResource(getResources(), R.drawable.avatar);
         ladder = BitmapFactory.decodeResource(getResources(), R.drawable.ladder);
         snake = BitmapFactory.decodeResource(getResources(), R.drawable.snake);
         diceButton=(ImageView) findViewById(R.id.diceButton);
-        forbidden=(ImageView) findViewById(R.id.diceForbidden);
+        information=(TextView) findViewById(R.id.information);
 
 
         mImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -121,7 +121,7 @@ public class Board extends AppCompatActivity implements LocationListener {
 
                     // Here your view is already layed out and measured for the first time
                     drawing.drawBoard(mImageView,ladder,snake);
-                    drawing.showAvatarInTile(userTile, userPrevTile, avatar);
+                    drawing.showAvatarInTile(userTile, avatar);
                     pLocation.writeToFile(drawing.sqWidth,drawing.sqHeight,boardSize,10);
                     mMeasured = true; // Some optional flag to mark, that we already got the sizes
 
@@ -139,10 +139,10 @@ public class Board extends AppCompatActivity implements LocationListener {
         }
         else {
             ((TextView) findViewById(R.id.textView1)).setText("");
-            drawing.showAvatarInTile(userTile, userPrevTile, avatar);
+            drawing.showAvatarInTile(userTile,avatar);
             if (userTile==userGoal){
-                forbidden.setVisibility(View.INVISIBLE);
-
+                diceButton.setVisibility(View.VISIBLE);
+                information.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -170,7 +170,10 @@ public class Board extends AppCompatActivity implements LocationListener {
                 //prev goal set
                 userGoal+=data.getIntExtra("diceNumber",1);
                 //show star
-                forbidden.setVisibility(View.VISIBLE);
+                diceButton.setVisibility(View.INVISIBLE);
+                String message=String.format ("Goal: %d", userGoal);
+                information.setText(message);
+                information.setVisibility(View.VISIBLE);
 
 
             }
