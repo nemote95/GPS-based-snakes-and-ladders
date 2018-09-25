@@ -18,11 +18,8 @@ public class ShakeDetector implements SensorEventListener {
      */
     private static final float SHAKE_THRESHOLD_GRAVITY = 9.81F;
     private static final int SHAKE_SLOP_TIME_MS = 500;
-    private static final int SHAKE_COUNT_RESET_TIME_MS = 2000;
 
     private OnShakeListener mListener;
-    private long mShakeTimestamp;
-    private int mShakeCount;
 
     private long now = 0;
     private long timeDiff = 0;
@@ -80,7 +77,6 @@ public class ShakeDetector implements SensorEventListener {
 
                     if (now - lastShake >= SHAKE_SLOP_TIME_MS) {
                         // trigger shake event
-                        Log.d("shake force","force"+force);
                         mListener.onShake(10);
                     } else {
                         Log.d("shake","No Motion detected");
@@ -93,7 +89,7 @@ public class ShakeDetector implements SensorEventListener {
                 lastZ = z;
                 lastUpdate = now;
             } else {
-                Log.d("shake","No M");
+                Log.d("shake","No Motion detected");
             }
         }
     }
