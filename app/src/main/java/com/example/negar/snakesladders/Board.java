@@ -1,6 +1,8 @@
 package com.example.negar.snakesladders;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -26,6 +28,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
@@ -173,7 +177,7 @@ public class Board extends AppCompatActivity implements LocationListener {
                     // Here your view is already laied out and measured for the first time
                     drawing.drawBoard(mImageView,ladder,snake);
                     drawing.showAvatarInTile(userTile, avatar);
-                    pLocation.writeToFile(drawing.sqWidth,drawing.sqHeight,boardSize,10);
+                    //pLocation.writeToFile(drawing.sqWidth,drawing.sqHeight,boardSize,10);
                     mMeasured = true; // Some optional flag to mark, that we already got the sizes
                 }
             }
@@ -195,8 +199,28 @@ public class Board extends AppCompatActivity implements LocationListener {
                 diceButton.setVisibility(View.VISIBLE);
                 information.setVisibility(View.INVISIBLE);
             }
+            //check if user is on the snake
+            for (int s=0;s<drawing.board.boardSnakes.size();s++){
+                int snake_tile=drawing.board.boardSnakes.get(s);
+                if (userTile==snake_tile | userTile==snake_tile+1) dialogYouDied();
+            }
         }
+    }
 
+    public void dialogYouDied(){
+        final Dialog dialog = new Dialog(this);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        View dialogView = getLayoutInflater().inflate(R.layout.activity_died
+                , null);
+        dialog.setContentView(dialogView);
+        Button closeBtn = (Button)dialogView.findViewById(R.id.close_btn);
+        closeBtn .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     public void getDiceNumber(View view){

@@ -67,24 +67,23 @@ public class Drawing {
                 int cornersRadius = 30-board.size+200/sqHeight;
                 mCanvas.drawRoundRect(mRect, cornersRadius,cornersRadius,mPaint);
                 mCanvas.drawText(String.valueOf(cellNumber), OFFSET + (sqWidth + OFFSET)*col+sqWidth/2, (sqHeight + OFFSET) * row+sqHeight/2, mPaintText);
-
             }
         }
         //display ladder and snakes
         for (int t=0; t<board.boardLadders.size();t++){
             Point p =board.tileToPoit(board.boardLadders.get(t));
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth/2, sqHeight*2, true);
-            mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/4,p.y+sqHeight/2,mPaint);
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(ladder, sqWidth/3, sqHeight*2, true);
+            mCanvas.drawBitmap(resizedBitmap,p.x+sqWidth/5,p.y+sqHeight/2,mPaint);
         }
 
         for (int t=0; t<board.boardSnakes.size();t++){
             Point p =board.tileToPoit(board.boardSnakes.get(t));
-            Bitmap modifiedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight/3, true);
+            Bitmap modifiedBitmap = Bitmap.createScaledBitmap(snake, sqWidth*2, sqHeight/2, true);
 
             if (t%2==0){
                 Matrix matrix = new Matrix();
                 matrix.preScale(-1.0f, 1.0f);
-                modifiedBitmap = Bitmap.createBitmap(modifiedBitmap,0,0, sqWidth*2, sqHeight/3,matrix, true);
+                modifiedBitmap = Bitmap.createBitmap(modifiedBitmap,0,0, sqWidth*2, sqHeight/2,matrix, true);
             }
             mCanvas.drawBitmap(modifiedBitmap,p.x,p.y+sqHeight/2,mPaint);
         }

@@ -1,5 +1,6 @@
 package com.example.negar.snakesladders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -13,7 +14,8 @@ public class Finish extends Activity {
     }
 
     void startAgain(View view){
-
+        Intent intent = new Intent(this,SetBoardCenter.class);
+        startActivity(intent);
     }
 
 }

@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp" android:layout_height="wrap_content"
+    android:orientation="vertical"
+    style="@style/Animation.AppCompat.Dialog">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/chewy"
+        android:text="@string/you_died"
+        android:textAlignment="center"
+        android:textColor="@color/colorBoardText" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/died" />
+
+    <Button
+        android:id="@+id/close_btn"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_blue_dark"
+        android:fontFamily="@font/chewy"
+        android:text="@string/tap_to_continue"
+        android:textAlignment="center" />
+
+</LinearLayout>
