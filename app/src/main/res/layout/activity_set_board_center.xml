@@ -22,17 +22,17 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="84dp"
+            android:layout_height="wrap_content"
             android:layout_weight="0.20"
-            android:gravity="center"
             android:fontFamily="@font/chewy"
-            android:textColor="@color/colorBoardText"
+            android:gravity="center"
             android:text="@string/set_center_description"
+            android:textColor="@color/colorBoardText"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/btnLocation"
-            android:layout_width="116dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/chewy"
@@ -56,7 +56,7 @@
             <TextView
                 android:id="@+id/locationView"
                 android:layout_width="wrap_content"
-                android:layout_height="44dp"
+                android:layout_height="wrap_content"
                 android:text=""
                 tools:layout_editor_absoluteX="163dp"
                 tools:layout_editor_absoluteY="357dp" />
@@ -68,7 +68,7 @@
 
             <Button
                 android:id="@+id/btnSet"
-                android:layout_width="119dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#26db53"
                 android:fontFamily="@font/chewy"
