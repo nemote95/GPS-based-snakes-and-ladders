@@ -58,45 +58,32 @@ public class DiceRoll extends AppCompatActivity {
 
             @Override
             public void onShake(int count) {
-                /*
-                 * The following method, "handleShakeEvent(count):" is a stub //
-                 * method you would use to setup whatever you want done once the
-                 * device has been shook.
-                 */
+
                 if (!rolling) {
                     rolling = true;
-                    //Show rolling image
                     Roll roll=new Roll();
                     dice_picture.setImageResource(R.drawable.dice3droll);
-                    //Start rolling sound
                     dice_sound.play(sound_id, 1.0f, 1.0f, 0, 0, 1.0f);
                     //Pause to allow image to update
                     timer.schedule(roll, 1000);
-                    //move to another activity;
+                    //go to another activity;
                     goBackToCaller(roll.diceNumber);
                 }
             }
         });
     }
 
-    //New code to initialise sound playback
     void InitSound() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //Use the newer SoundPool.Builder
-            //Set the audio attributes, SONIFICATION is for interaction events
-            //uses builder pattern
             AudioAttributes aa = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .build();
 
-            //default max streams is 1
-            //also uses builder pattern
             dice_sound= new SoundPool.Builder().setAudioAttributes(aa).build();
 
         } else {
             //Running on device earlier than Lollipop
-            //Use the older SoundPool constructor
             dice_sound= PreLollipopSoundPool.NewSoundPool();
         }
         //Load the dice sound
@@ -116,8 +103,6 @@ public class DiceRoll extends AppCompatActivity {
     Handler.Callback callback = new Handler.Callback() {
         public boolean handleMessage(Message msg) {
             //Get roll result
-            //Remember nextInt returns 0 to 5 for argument of 6
-            //hence + 1
             switch(msg.what) {
                 case 1:
                     dice_picture.setImageResource(R.drawable.one);
