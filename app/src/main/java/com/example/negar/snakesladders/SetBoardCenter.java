@@ -1,12 +1,15 @@
 package com.example.negar.snakesladders;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -52,6 +55,9 @@ public class SetBoardCenter extends Activity implements OnClickListener {
         btnSetLocation = (Button) findViewById(R.id.btnSet);
         btnSetLocation.setVisibility(View.INVISIBLE);
 
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+
         locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
         try {
@@ -65,6 +71,7 @@ public class SetBoardCenter extends Activity implements OnClickListener {
             }
         } catch (SecurityException e) {
             //dialogGPS(this.getContext()); // lets the user know there is a problem with the gps
+            Log.e("location Error",e.toString());
         }
 
     }
@@ -82,10 +89,10 @@ public class SetBoardCenter extends Activity implements OnClickListener {
             try {
                 if (locationManager==null){locationManager = (LocationManager)
                         getSystemService(Context.LOCATION_SERVICE);}
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 locationManager.requestLocationUpdates(LocationManager
                         .GPS_PROVIDER, 0, 0,locationListener);
             } catch (SecurityException e) {
+                Log.e("getLocationError",e.toString());
             }
 
 
@@ -137,6 +144,19 @@ public class SetBoardCenter extends Activity implements OnClickListener {
                         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    alertbox("Permission Required","this application needs GPS access permission");
+                }
+                return;
+            }
+        }
     }
 
     /*----------Listener class to get coordinates ------------- */
