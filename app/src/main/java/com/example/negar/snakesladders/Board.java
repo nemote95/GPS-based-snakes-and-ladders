@@ -177,12 +177,11 @@ public class Board extends AppCompatActivity implements LocationListener {
                     // Here your view is already laied out and measured for the first time
                     drawing.drawBoard(mImageView,ladder,snake);
                     drawing.showAvatarInTile(userTile, avatar);
-                    pLocation.writeToFile(drawing.sqWidth,drawing.sqHeight,boardSize,10);
+                    //pLocation.writeToFile(drawing.sqWidth,drawing.sqHeight,boardSize,10);
                     mMeasured = true; // Some optional flag to mark, that we already got the sizes
                 }
             }
         });
-
     }
     void manageUserMovement(){
         if (userTile>=boardSize*boardSize & userGoal>=boardSize*boardSize){

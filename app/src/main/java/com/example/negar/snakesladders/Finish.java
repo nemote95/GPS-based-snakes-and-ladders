@@ -14,7 +14,7 @@ public class Finish extends Activity {
     }
 
     void startAgain(View view){
-        Intent intent = new Intent(this,SetBoardCenter.class);
+        Intent intent = new Intent(this,SetBoardStart.class);
         startActivity(intent);
     }
 

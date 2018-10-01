@@ -17,7 +17,7 @@ public class PLocation {
     private double mWorldWidth;
     private double xCenter;
     private double yCenter;
-    private double MeterPerPixel;
+    public double MeterPerPixel;
 
 
     public PLocation(double centerLat,double centerLong,double mWorldWidth,double MeterPerPixel){

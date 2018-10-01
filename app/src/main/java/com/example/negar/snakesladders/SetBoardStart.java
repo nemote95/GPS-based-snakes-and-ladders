@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SetBoardCenter extends Activity implements OnClickListener {
+public class SetBoardStart extends Activity implements OnClickListener {
     private LocationManager locationManager=null;
     private LocationListener locationListener=null;
     Location center=null;
