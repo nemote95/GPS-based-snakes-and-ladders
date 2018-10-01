@@ -13,19 +13,15 @@ import android.widget.TextView;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.location.LocationListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SetBoardCenter extends Activity implements OnClickListener {
+public class SetBoardStart extends Activity implements OnClickListener {
     private LocationManager locationManager=null;
     private LocationListener locationListener=null;
     Location center=null;
@@ -36,7 +32,6 @@ public class SetBoardCenter extends Activity implements OnClickListener {
     private TextView locationView = null;
     private ProgressBar pb =null;
 
-    private static final String TAG = "Debug";
     private Boolean flag = false;
 
 
@@ -44,9 +39,6 @@ public class SetBoardCenter extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_board_center);
-        //if you want to lock screen for always Portrait mode
-        setRequestedOrientation(ActivityInfo
-                .SCREEN_ORIENTATION_PORTRAIT);
 
         pb = (ProgressBar) findViewById(R.id.progressBar1);
         pb.setVisibility(View.INVISIBLE);
@@ -94,7 +86,6 @@ public class SetBoardCenter extends Activity implements OnClickListener {
                 locationManager.requestLocationUpdates(LocationManager
                         .GPS_PROVIDER, 0, 0,locationListener);
             } catch (SecurityException e) {
-                //dialogGPS(this.getContext()); // lets the user know there is a problem with the gps
             }
 
 

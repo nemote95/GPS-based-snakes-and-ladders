@@ -6,7 +6,9 @@
     <string name="start_game_button">Go!</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
-    <string name="keep_tapping">Keep tapping.</string>
     <string name="done">Done!</string>
+    <string name="title_activity_died">died</string>
+    <string name="tap_to_continue">Tap to continue</string>
+    <string name="you_died">You loosed 1 life</string>
 
 </resources>
