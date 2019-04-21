@@ -1,4 +1,7 @@
-# GPSBasedSnakesLadder
-a gps based snakes and ladders game whith a virtual board
+In this project, a demonstration of a GPS-based virtual Snakes and Ladders game is provided as an exemplar of mobile computing for kids. The objective of this application is encouraging physical activities by gamification.  
 
-the goal of this project is practicing mobile computing concepts.
+
+This application is a version of traditional Snakes and Ladders game where the players can move on a simple grid board from A to B by rolling a dice. First, the user needs to set the location of the board starting point. Then, the board will be displayed, and the user will virtually move on the board. It means that the board only exist virtually on the user’s mobile phone so that it can be played everywhere. The game piece(avatar) in the board moves as the player walks on the ground. In keeping with this, players can shake their phones to roll the virtual dice. If the player reaches to the finish tile a celebration layout is displayed. Also, if the player hits a snake, a small dialog will be pop up to show that the player has lost 1 life. 
+This first version of the game forgoes the actual ladders mechanic and some game design concepts such as scoring or leaderboard management since the focus of this project was more on the mobile computing concepts than game design aspects. Given that the game would be mostly played outdoor, the game board background should change with respect to lightening in the environment. Moreover, due to the graphically and computationally intensive nature of this game, some actions were taken to manage battery.  
+
+This application targets Android platform since Android platforms were more available to test than other platforms. The minimum SDK version supported in this application is SDK 16 and the target SDK is 28. Although there are a variant range of game engines for developing games such as Unity, the tool used for this project was Android Studio 3.2. the reason behind this decision is that the game requires simple graphical elements such as bitmaps or rectangles to show the board tiles and pieces. 
